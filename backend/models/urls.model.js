@@ -4,6 +4,9 @@ const urlSchema = new Schema({
     url: {
         type: String,
     },
+    count: {
+        type: Number
+    },
     shortId: {
         type: String,
         unique: true
