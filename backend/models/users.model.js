@@ -26,7 +26,7 @@ userSchema.methods.getToken = async function(){
         username: this.username
     }
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET)
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d"})
     return token;
 }
 

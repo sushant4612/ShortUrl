@@ -22,9 +22,11 @@ connectDb();
 import healthCheckRouter from './routes/healthCheck.route.js'
 import userRouter from './routes/userRoute.route.js'
 import errorHandler from './middlewares/error.middleware.js'
+import urlRouter from './routes/urlRoute.route.js'
 
 app.use('/api/v1/healthCheck', healthCheckRouter)
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/url', urlRouter);
 
 app.use(errorHandler);
 

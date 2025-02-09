@@ -34,10 +34,6 @@ const handleLogin = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200,token,"Successfully Login"));
 })
 
-const handleLogout = asyncHandler(async (req, res) => {
-    
-})
-
 const handleRegister = asyncHandler(async (req, res) => {
 
     if(!userSchema.safeParse(req.body).success){
@@ -65,6 +61,5 @@ const handleRegister = asyncHandler(async (req, res) => {
 
 export {
     handleLogin,
-    handleRegister,
-    handleLogout
+    handleRegister
 }
