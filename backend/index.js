@@ -5,6 +5,9 @@ import { connectDb } from './db/index.js'
 const app = express()
 const PORT = process.env.PORT || 30001
 
+//external middleware
+app.use(express.json());
+
 //configuration
 dotenv.config()
 

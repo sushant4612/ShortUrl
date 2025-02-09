@@ -1,7 +1,6 @@
-import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js"
 
-const errorHandler = asyncHandler(async (err, req, res, next) => {
+const errorHandler = async (err, req, res, next) => {
     let error = err;
 
     if(!(error instanceof ApiError)){
@@ -17,6 +16,6 @@ const errorHandler = asyncHandler(async (err, req, res, next) => {
     }
 
     return res.status(error.statusCode).json(response)
-})
+}
 
 export default errorHandler

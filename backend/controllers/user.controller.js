@@ -1,5 +1,6 @@
 import { User } from "../models/users.model.js";
 import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js"
 import asyncHandler from "../utils/asyncHandler.js";
 import { z } from 'zod'
 
@@ -10,11 +11,10 @@ const userSchema = z.object({
 
 const handleLogin = asyncHandler(async (req, res) => {
     
-
 })
 
 const handleLogout = asyncHandler(async (req, res) => {
-
+    
 })
 
 const handleRegister = asyncHandler(async (req, res) => {
@@ -24,11 +24,21 @@ const handleRegister = asyncHandler(async (req, res) => {
 
     const {username, password} = req.body;
 
-    const existedUser = User.findOne({username});
-    
+    const existedUser = await User.findOne({username});    
     if(existedUser){
         throw new ApiError(400, "User already exist");
     }
+    
+    let user = new User({
+        username,
+        password
+    })
+
+    await user.save();
+
+    const token = await user.getToken();
+    
+    return res.status(200).json(new ApiResponse(200,token,"Successfully Registered"));
 })
 
 export {
