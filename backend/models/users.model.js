@@ -12,10 +12,13 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    urls: {
-        type: Schema.Types.ObjectId,
-        ref: "Url"
-    }
+    urls: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Url",
+            
+        }
+    ],
 }, {
     timestamps: true
 })

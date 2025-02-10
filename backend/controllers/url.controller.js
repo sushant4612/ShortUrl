@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import { nanoid } from "nanoid";
 import { Url } from "../models/urls.model.js";
 import ApiResponse from "../utils/ApiResponse.js";
+import { User } from "../models/users.model.js";
 
 const urlSchema = z.object({
     url: z.string().url()
@@ -22,6 +23,14 @@ const getShortUrl = asyncHandler(async (req, res) => {
     const existedUrl = await Url.findOne({url});
 
     if(existedUrl){
+        console.log("Hello");
+        console.log(req._id);
+        
+        if(req._id){
+            await User.findByIdAndUpdate(req._id, 
+                { $addToSet: {urls: existedUrl._id}}
+            )
+        }
         genratedUrl = `${process.env.URL}${existedUrl.shortId}`
         return res.status(200).json(new ApiResponse(200,genratedUrl,"Url Generated Succesfully"))
     }
@@ -36,6 +45,11 @@ const getShortUrl = asyncHandler(async (req, res) => {
     }
 
     genratedUrl = `${process.env.URL}${shortId}`
+    if(req._id){
+        await User.findByIdAndUpdate(req._id, 
+            { $push: {urls: urlObj._id}}
+        )
+    }
 
     return res.status(200).json(new ApiResponse(200,genratedUrl,"Url Generated Succesfully"))
 })
