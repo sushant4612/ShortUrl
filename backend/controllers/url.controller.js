@@ -10,6 +10,28 @@ const urlSchema = z.object({
     url: z.string().url()
 })
 
+const listUrl = asyncHandler(async (req, res) => {
+    if(!req._id){
+        return new ApiError(404, "Invalid Credentials");
+    }
+
+    const user = await User.findById(req._id);
+
+    const urlIds = user.urls;
+    let data = [];
+    
+    for(let i = 0; i < urlIds.length; i++){
+        let urlId = urlIds[i];
+        const url = await Url.findById(urlId);
+        data.push({
+            longUrl: url.url,
+            shortUrl: `${process.env.URL}${url.shortId}`
+        });
+    }
+
+    return res.status(200).json( new ApiResponse(200, data, "Url Recieved Successfully"));
+})
+
 const getShortUrl = asyncHandler(async (req, res) => {
     if(!urlSchema.safeParse(req.body).success){
         throw new ApiError(400, "url not valid");
@@ -68,5 +90,6 @@ const handleRedirect = asyncHandler(async (req, res) => {
 
 export {
     getShortUrl,
-    handleRedirect
+    handleRedirect,
+    listUrl
 }
