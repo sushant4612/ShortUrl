@@ -25,7 +25,8 @@ const listUrl = asyncHandler(async (req, res) => {
         const url = await Url.findById(urlId);
         data.push({
             longUrl: url.url,
-            shortUrl: `${process.env.URL}${url.shortId}`
+            shortUrl: `${process.env.URL}${url.shortId}`,
+            count: url.count
         });
     }
 
@@ -42,20 +43,20 @@ const getShortUrl = asyncHandler(async (req, res) => {
     const { url } = req.body;
     const shortId = nanoid(6);
 
-    const existedUrl = await Url.findOne({url});
+    // const existedUrl = await Url.findOne({url});
 
-    if(existedUrl){
-        console.log("Hello");
-        console.log(req._id);
+    // if(existedUrl){
+    //     console.log("Hello");
+    //     console.log(req._id);
         
-        if(req._id){
-            await User.findByIdAndUpdate(req._id, 
-                { $addToSet: {urls: existedUrl._id}}
-            )
-        }
-        genratedUrl = `${process.env.URL}${existedUrl.shortId}`
-        return res.status(200).json(new ApiResponse(200,genratedUrl,"Url Generated Succesfully"))
-    }
+    //     if(req._id){
+    //         await User.findByIdAndUpdate(req._id, 
+    //             { $addToSet: {urls: existedUrl._id}}
+    //         )
+    //     }
+    //     genratedUrl = `${process.env.URL}${existedUrl.shortId}`
+    //     return res.status(200).json(new ApiResponse(200,genratedUrl,"Url Generated Succesfully"))
+    // }
 
     const urlObj = await Url.create({
         url,
@@ -78,8 +79,11 @@ const getShortUrl = asyncHandler(async (req, res) => {
 
 const handleRedirect = asyncHandler(async (req, res) => {
     const shortId = req.params.shortId;
-    
-    const url = await Url.findOne({shortId})
+
+    const url = await Url.findOneAndUpdate({shortId},
+        { $inc: {count: 1}},
+        { new: true}
+    )
 
     if(!url){
         throw new ApiError(404, "Invalid url");
