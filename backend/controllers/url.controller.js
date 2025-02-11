@@ -26,7 +26,8 @@ const listUrl = asyncHandler(async (req, res) => {
         data.push({
             longUrl: url.url,
             shortUrl: `${process.env.URL}${url.shortId}`,
-            count: url.count
+            count: url.count,
+            _id: url._id
         });
     }
 
@@ -77,6 +78,31 @@ const getShortUrl = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200,genratedUrl,"Url Generated Succesfully"))
 })
 
+const removeUrl = asyncHandler(async (req, res) => {
+    if(!req._id){
+        throw new ApiError(404, "Unathorized Access")
+    }
+
+    const userId = req._id
+
+
+    const urlId = req.body.id;
+
+    if(!urlId){
+        throw new ApiError(404, "urlId is missing")
+    }
+
+    await User.findByIdAndUpdate(
+        userId,
+        { $pull: { urls: urlId } }, 
+        { new: true }
+    );
+
+    await Url.findByIdAndDelete(urlId);
+
+    return res.status(200).json(new ApiResponse(200, {}, "Deleted Successfully"))
+})
+
 const handleRedirect = asyncHandler(async (req, res) => {
     const shortId = req.params.shortId;
 
@@ -95,5 +121,6 @@ const handleRedirect = asyncHandler(async (req, res) => {
 export {
     getShortUrl,
     handleRedirect,
-    listUrl
+    listUrl,
+    removeUrl
 }
