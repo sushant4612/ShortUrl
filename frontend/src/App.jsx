@@ -1,13 +1,14 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Navbar from './components/Navbar'
 import Modal from './components/Modal'
-import { UrlContext } from './context/urlContext'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const { token } = useContext(UrlContext)
 
   return (
     <>
+      <ToastContainer />
       <Navbar/>
       <Modal/>
     </>

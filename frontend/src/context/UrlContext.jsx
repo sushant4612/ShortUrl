@@ -4,7 +4,7 @@ import { createContext, useEffect, useState } from "react";
 export const UrlContext = createContext();
 
 const UrlContextProvider = (props) => {
-    const backendUrl = import.meta.env
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [token, setToken] = useState("")
     const [isOpen, setIsOpen] = useState(false)
     const logout = () => {
