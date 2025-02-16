@@ -4,7 +4,7 @@ import verifyLogin from "../middlewares/verifyLogin.middleware.js";
 
 const router = Router();
 
-router.route('/').get(verifyLogin, getShortUrl)
+router.route('/').post(verifyLogin, getShortUrl)
 router.route('/list').get(verifyLogin, listUrl)
 router.route('/remove').delete(verifyLogin, removeUrl)
 

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Modal from './components/Modal'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UrlGenrator from './components/UrlGenrator';
 
 const App = () => {
 
@@ -11,6 +12,7 @@ const App = () => {
       <ToastContainer />
       <Navbar/>
       <Modal/>
+      <UrlGenrator/>
     </>
   )
 }

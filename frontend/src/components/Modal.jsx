@@ -48,7 +48,7 @@ const Modal = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm animate-fade-in">
+    <div className="fixed z-20 inset-0 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm animate-fade-in">
       <div className="bg-gray-900 text-white rounded-2xl shadow-2xl p-6 w-96 transform transition-all scale-95 animate-scale-in">
         {/* Modal Header */}
         <div className="flex justify-between items-center border-b border-gray-700 pb-3">

@@ -12,7 +12,7 @@ const userSchema = z.object({
 const handleLogin = asyncHandler(async (req, res) => {
 
     if(!userSchema.safeParse(req.body).success){
-        throw new ApiError(400, "username and password not valid");
+        throw new ApiError(400, "Enter valid password");
     }
 
     const {username, password} = req.body;
@@ -37,7 +37,7 @@ const handleLogin = asyncHandler(async (req, res) => {
 const handleRegister = asyncHandler(async (req, res) => {
 
     if(!userSchema.safeParse(req.body).success){
-        throw new ApiError(400, "username and password not valid");
+        throw new ApiError(400, "Enter valid password");
     }
 
     const {username, password} = req.body;
