@@ -1,12 +1,14 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { connectDb } from './db/index.js'
+import cors from 'cors'
 
 const app = express()
 const PORT = process.env.PORT || 30001
 
 //external middleware
 app.use(express.json());
+app.use(cors())
 
 //configuration
 dotenv.config()
