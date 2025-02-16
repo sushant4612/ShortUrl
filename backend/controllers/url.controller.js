@@ -106,17 +106,18 @@ const removeUrl = asyncHandler(async (req, res) => {
 const handleRedirect = asyncHandler(async (req, res) => {
     const shortId = req.params.shortId;
 
-    const url = await Url.findOneAndUpdate({shortId},
-        { $inc: {count: 1}},
-        { new: true}
-    )
+    const url = await Url.findOneAndUpdate(
+        { shortId },
+        { $inc: { count: 1 } },
+        { new: true }
+    );
 
-    if(!url){
-        throw new ApiError(404, "Invalid url");
+    if (!url) {
+        return res.status(404).json({ message: "Invalid URL" });
     }
 
-    return res.redirect(url.url);
-})
+    res.json({ redirectUrl: url.url });
+});
 
 export {
     getShortUrl,
