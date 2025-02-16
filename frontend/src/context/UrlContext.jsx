@@ -35,4 +35,4 @@ const UrlContextProvider = (props) => {
     )
 }
 
-export default UrlContextProvider
+export default UrlContextProvider;
