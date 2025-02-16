@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Copy, CheckCircle } from 'lucide-react';
 import axios from 'axios';
-import { UrlContext } from '../context/urlContext';
+import { UrlContext } from '../context/context';
 import { toast } from 'react-toastify';
 
 const UrlGenerator = () => {

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { UrlContext } from '../context/urlContext';
+import { UrlContext } from '../context/context';
 
 const Navbar = () => {
   const { setIsOpen, token, logout } = useContext(UrlContext);
