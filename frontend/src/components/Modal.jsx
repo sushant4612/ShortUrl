@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { UrlContext } from "../context/urlContext";
+import { UrlContext } from "../context/context";
 import axios from "axios"
 import { toast } from "react-toastify";
 
