@@ -3,6 +3,8 @@ import { Copy, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 import { UrlContext } from '../context/context';
 import { toast } from 'react-toastify';
+import UrlTable from './UrlTable';
+import LoginCta from './LoginCta';
 
 const UrlGenerator = () => {
   const { backendUrl, token } = useContext(UrlContext);
@@ -42,7 +44,7 @@ const UrlGenerator = () => {
   };
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center bg-gray-950 px-6">
+    <div className="min-h-screen pt-24 w-full flex flex-col justify-center items-center bg-gray-950 px-6">
       {/* Main heading */}
       <h1 className="text-5xl sm:text-6xl font-extrabold text-center mb-10">
         <span className="text-white">Simplify Your </span>
@@ -103,6 +105,15 @@ const UrlGenerator = () => {
           )}
         </div>
       </div>
+      {
+        token ?
+          <div className='my-8'>
+            <UrlTable/>
+          </div>  :
+          <div className='my-8'>
+            <LoginCta/>
+          </div>
+      }
     </div>
   );
 };

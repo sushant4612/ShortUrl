@@ -7,6 +7,7 @@ import UrlGenrator from './components/UrlGenrator';
 import { UrlContext } from './context/context';
 import { Route, Routes } from 'react-router-dom';
 import RedirectComponent from './components/RedirectComponent';
+import UrlTable from './components/UrlTable';
 
 const App = () => {
   const {isOpen} = useContext(UrlContext); 
@@ -18,7 +19,6 @@ const App = () => {
       {
         isOpen ? null : <UrlGenrator/>
       }
-      
       <Routes>
         <Route path="/:id" element={<RedirectComponent/>}/>
       </Routes>
