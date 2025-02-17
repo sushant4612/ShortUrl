@@ -5,7 +5,7 @@ import { UrlContext } from '../context/context';
 import { toast } from 'react-toastify';
 
 const UrlGenerator = () => {
-  const { backendUrl } = useContext(UrlContext);
+  const { backendUrl, token } = useContext(UrlContext);
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [copied, setCopied] = useState(false);
@@ -17,9 +17,17 @@ const UrlGenerator = () => {
     }
 
     try {
-      const res = await axios.post(`${backendUrl}/url/`, { url });
-      toast.success(res.data.message);
-      setShortUrl(res.data.data);
+      if(!token){
+          const res = await axios.post(`${backendUrl}/url/`, { url });
+          toast.success(res.data.message);      
+          setShortUrl(res.data.data);
+      }else{
+          const res = await axios.post(`${backendUrl}/url/`, { url }, {headers: {
+            Authorization: token
+          }});
+          toast.success(res.data.message);      
+          setShortUrl(res.data.data);
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Something went wrong');
     }
