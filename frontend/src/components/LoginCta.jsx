@@ -1,54 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { LineChart, Link } from 'lucide-react';
+import { UrlContext } from '../context/context';
 
 const LoginCta = () => {
+  const {setIsOpen} = useContext(UrlContext);
+
   return (
-    <div className="w-full max-w-lg mx-auto p-6 bg-gray-900 rounded-lg border border-gray-800 shadow-lg">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-semibold text-white mb-3">
-          Unlock Premium Features
-        </h2>
-        <p className="text-gray-400">
-          Sign in to access advanced URL management tools
-        </p>
-      </div>
+    <div className="w-full max-w-md mx-auto p-6 bg-gray-900 rounded-lg border border-gray-800 shadow-lg text-center">
+      <h2 className="text-xl font-semibold text-white mb-2">Unlock Premium</h2>
+      <p className="text-gray-400 mb-4">Sign in for advanced tools</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="p-5 bg-gray-800/50 rounded-lg border border-gray-700 hover:border-blue-500/50 transition-colors duration-200">
-          <div className="flex items-center mb-3">
-            <LineChart className="w-5 h-5 text-blue-500 mr-2" />
-            <h3 className="text-lg font-medium text-white">Track Clicks</h3>
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        {[{ icon: LineChart, title: "Track Clicks" }, { icon: Link, title: "Manage URLs" }].map((item, i) => (
+          <div key={i} className="p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-blue-500 transition">
+            <div className="flex items-center justify-center mb-2">
+              <item.icon className="w-5 h-5 text-blue-500 mr-2" />
+              <h3 className="text-white text-sm font-medium">{item.title}</h3>
+            </div>
           </div>
-          <p className="text-sm text-gray-400">
-            Monitor your links' performance with detailed click analytics
-          </p>
-        </div>
-
-        <div className="p-5 bg-gray-800/50 rounded-lg border border-gray-700 hover:border-blue-500/50 transition-colors duration-200">
-          <div className="flex items-center mb-3">
-            <Link className="w-5 h-5 text-blue-500 mr-2" />
-            <h3 className="text-lg font-medium text-white">Manage URLs</h3>
-          </div>
-          <p className="text-sm text-gray-400">
-            Organize and manage all your shortened links in one place
-          </p>
-        </div>
+        ))}
       </div>
 
-      <div className="flex flex-col items-center">
-        <button
-          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-lg transition-colors duration-200"
-          onClick={() => {/* Add your login handler */}}
-        >
-          Log In to Get Started
-        </button>
-        <p className="mt-4 text-sm text-gray-400">
-          Don't have an account?{' '}
-          <a href="#" className="text-blue-500 hover:text-blue-400 transition-colors duration-200">
-            Sign up free
-          </a>
-        </p>
-      </div>
+      <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg" onClick={() => {setIsOpen(true)}}>
+        Sign In
+      </button>
     </div>
   );
 };

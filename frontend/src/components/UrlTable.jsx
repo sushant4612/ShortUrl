@@ -1,129 +1,119 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { X, ExternalLink } from "lucide-react";
+import axios from 'axios';
+import { UrlContext } from '../context/context';
+import { toast } from 'react-toastify';
 
 const UrlTable = () => {
-  const [urls, setUrls] = React.useState([
-    {
-      longUrl: "https://google.com",
-      shortUrl: "http://localhost:5173/gfO2v5",
-      count: 0,
-      _id: "67ab69353c880c4dd35bf8c0"
-    },
-    {
-        longUrl: "https://google.com",
-        shortUrl: "http://localhost:5173/gfO2v5",
-        count: 0,
-        _id: "67ab69353c880c4dd35bf8c0"
-      }
-  ]);
+  const { token, backendUrl } = useContext(UrlContext);
+  const [urls, setUrls] = useState([]);
 
-  const handleDelete = (id) => {
-    setUrls(urls.filter(url => url._id !== id));
+  useEffect(() => {
+    const fetchUrls = async () => {
+      try {
+        const res = await axios.get(`${backendUrl}/url/list`, {
+          headers: { Authorization: token },
+        });
+        setUrls(res.data.data);
+      } catch (error) {
+        toast.error("Failed to fetch URLs");
+      }
+    };
+    fetchUrls();
+  }, [token, backendUrl]);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${backendUrl}/url/remove`,
+        {
+            id
+        },{
+        headers: { Authorization: token },
+      });
+      setUrls(urls.filter((url) => url._id !== id));
+      toast.success("URL deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete URL");
+    }
   };
 
-  // Mobile card view
-  const MobileView = () => (
-    <div className="space-y-4 md:hidden">
-      {urls.map((url) => (
-        <div key={url._id} className="bg-gray-950 border border-slate-700 rounded-lg p-5 transition-all duration-200 hover:border-slate-600 shadow-lg">
-          <div className="flex justify-between items-start mb-3">
-            <div className="text-sm font-medium text-slate-300">Long URL</div>
-            <button
-              onClick={() => handleDelete(url._id)}
-              className="p-2 hover:bg-slate-800/50 rounded-full hover:text-red-400 transition-colors duration-200"
-              aria-label="Delete URL"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-          <a 
-            href={url.longUrl} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-blue-400 hover:text-blue-300 text-sm break-all group flex items-center gap-1 transition-colors duration-200"
-          >
-            {url.longUrl}
-            <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-          </a>
-          
-          <div className="text-sm font-medium text-slate-300 mt-4 mb-1">Short URL</div>
-          <a 
-            href={url.shortUrl} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-blue-400 hover:text-blue-300 text-sm break-all group flex items-center gap-1 transition-colors duration-200"
-          >
-            {url.shortUrl}
-            <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-          </a>
-          
-          <div className="flex items-center mt-4 bg-slate-900/50 p-2 rounded-md">
-            <span className="text-sm font-medium text-slate-300">Clicks:</span>
-            <span className="text-slate-300 ml-2 font-medium">{url.count}</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  // Desktop table view
-  const DesktopView = () => (
-    <div className="hidden md:block rounded-lg border border-slate-700 bg-gray-950 p-6 shadow-lg transition-all duration-200 hover:border-slate-600">
-      <table className="w-full table-auto">
-        <thead>
-          <tr className="border-b border-slate-700">
-            <th className="px-4 py-3 text-left text-slate-200 font-semibold">Long URL</th>
-            <th className="px-4 py-3 text-left text-slate-200 font-semibold">Short URL</th>
-            <th className="px-4 py-3 text-left text-slate-200 font-semibold">Clicks</th>
-            <th className="px-4 py-3 text-right text-slate-200 font-semibold">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {urls.map((url) => (
-            <tr key={url._id} className="border-b border-slate-700/50 last:border-0 hover:bg-slate-900/50 transition-colors duration-200">
-              <td className="px-4 py-3 text-slate-300">
-                <a 
-                  href={url.longUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-blue-400 hover:text-blue-300 truncate block max-w-xs group flex items-center gap-1 transition-colors duration-200"
-                >
-                  {url.longUrl}
-                  <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                </a>
-              </td>
-              <td className="px-4 py-3 text-slate-300">
-                <a 
-                  href={url.shortUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-blue-400 hover:text-blue-300 truncate block max-w-xs group flex items-center gap-1 transition-colors duration-200"
-                >
-                  {url.shortUrl}
-                  <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                </a>
-              </td>
-              <td className="px-4 py-3 text-slate-300 font-medium">{url.count}</td>
-              <td className="px-4 py-3 text-right">
-                <button
-                  onClick={() => handleDelete(url._id)}
-                  className="p-2 hover:bg-slate-800/50 text-red-400  rounded-full hover:text-red-400 transition-colors duration-200"
-                  aria-label="Delete URL"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4">
-      <MobileView />
-      <DesktopView />
+      {/* Desktop View */}
+      <div className="hidden md:block overflow-x-auto rounded-lg border border-gray-700 bg-gray-950 p-6 shadow-lg">
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="border-b border-gray-700">
+              <th className="px-4 py-3 text-left text-gray-200 font-semibold w-2/5">Long URL</th>
+              <th className="px-4 py-3 text-left text-gray-200 font-semibold w-2/5">Short URL</th>
+              <th className="px-4 py-3 text-left text-gray-200 font-semibold w-1/6">Clicks</th>
+              <th className="px-4 py-3 text-right text-gray-200 font-semibold w-1/12">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {urls.length > 0 ? (
+              urls.map((url) => (
+                <tr key={url._id} className="border-b border-gray-700 hover:bg-gray-800">
+                  <td className="px-4 py-3 text-gray-300 truncate max-w-[200px]">
+                    <a href={url.longUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                      {truncateText(url.longUrl, 30)}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3 text-gray-300 truncate max-w-[200px]">
+                    <a href={url.shortUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                      {url.shortUrl}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3 text-gray-300">{url.count}</td>
+                  <td className="px-4 py-3 text-right">
+                    <button onClick={() => handleDelete(url._id)} className="p-2 text-red-400 hover:text-red-500">
+                      <X className="h-4 w-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center text-gray-400 py-4">No URLs found</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile View */}
+      <div className="md:hidden space-y-4">
+        {urls.length > 0 ? (
+          urls.map((url) => (
+            <div key={url._id} className="border border-gray-700 bg-gray-950 p-4 rounded-lg shadow-md flex flex-col gap-2">
+              <div className="flex flex-col">
+                <span className="text-gray-400 text-sm font-semibold">Long URL</span>
+                <a href={url.longUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                  {truncateText(url.longUrl, 20)}
+                </a>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-gray-400 text-sm font-semibold">Short URL</span>
+                <a href={url.shortUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                  {url.shortUrl}
+                </a>
+              </div>
+              <div className="flex justify-between items-center">
+                <p className="text-gray-300 font-medium">Clicks: {url.count}</p>
+                <button onClick={() => handleDelete(url._id)} className="p-2 text-red-400 hover:text-red-500">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-400">No URLs found</p>
+        )}
+      </div>
     </div>
   );
 };
