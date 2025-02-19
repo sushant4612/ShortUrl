@@ -24,7 +24,7 @@ const UrlTable = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${backendUrl}/url/${id}`, {
+      await axios.delete(`${backendUrl}/url/remove/${id}`, {
         headers: { Authorization: token },
       });
       setUrls(urls.filter((url) => url._id !== id));
@@ -48,7 +48,7 @@ const UrlTable = () => {
               <th className="px-4 py-3 text-left text-gray-200 font-semibold w-2/5">Long URL</th>
               <th className="px-4 py-3 text-left text-gray-200 font-semibold w-2/5">Short URL</th>
               <th className="px-4 py-3 text-left text-gray-200 font-semibold w-1/6">Clicks</th>
-              <th className="px-4 py-3 text-right text-gray-200 font-semibold w-1/12">Actions</th>
+              <th className="px-4 py-3 text-right text-gray-200 font-semibold w-1/12">Delete</th>
             </tr>
           </thead>
           <tbody>

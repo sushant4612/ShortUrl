@@ -21,7 +21,7 @@ const UrlGenerator = () => {
     try {
       if(!token){
           const res = await axios.post(`${backendUrl}/url/`, { url });
-          toast.success(res.data.message);      
+          toast.success(res.data.message);
           setShortUrl(res.data.data);
       }else{
           const res = await axios.post(`${backendUrl}/url/`, { url }, {headers: {
