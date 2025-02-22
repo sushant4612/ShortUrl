@@ -6,6 +6,6 @@ const router = Router();
 
 router.route('/').post(verifyLogin, getShortUrl)
 router.route('/list').get(verifyLogin, listUrl)
-router.route('/remove').delete(verifyLogin, removeUrl)
+router.route('/remove/:id').delete(verifyLogin, removeUrl)
 
 export default router;

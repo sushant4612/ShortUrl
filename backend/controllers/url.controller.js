@@ -81,12 +81,10 @@ const getShortUrl = asyncHandler(async (req, res) => {
 const removeUrl = asyncHandler(async (req, res) => {
     if(!req._id){
         throw new ApiError(404, "Unathorized Access")
-    }
-    console.log("Hello");
-    
+    }    
     const userId = req._id
 
-    const urlId = req.body.id;
+    const urlId = req.params.id;
 
     if(!urlId){
         throw new ApiError(404, "urlId is missing")

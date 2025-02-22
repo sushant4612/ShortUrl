@@ -24,10 +24,7 @@ const UrlTable = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${backendUrl}/url/remove`,
-        {
-            id
-        },{
+      await axios.delete(`${backendUrl}/url/${id}`, {
         headers: { Authorization: token },
       });
       setUrls(urls.filter((url) => url._id !== id));
